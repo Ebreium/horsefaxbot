@@ -52,7 +52,9 @@ class QuoteModule(BaseModule):
 	@db_session
 	def quote(self, command: Command):
 		if len(command.message.entities) < 2:
-			return "Syntax: `/quote <user> [quote number]`"
+			q = Quote.select_random(1)[0]
+			return f"{TelegramUser.get(id=q.user).first_name}: {q.content}"
+
 		prefix = command.message.entities[1].offset + command.message.entities[1].length
 		quote = None
 		if command.message.entities[1].type is TextEntity.Type.MENTION:
