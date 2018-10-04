@@ -37,16 +37,17 @@ class QuoteModule(BaseModule):
 		user = None
 		if command.message.entities[1].type is TextEntity.Type.MENTION:
 			user = TelegramUser.get(username=command.args[0][1:])
-			quote = command.args[1:]
 		elif command.message.entities[1].type is TextEntity.Type.TEXT_MENTION:
 			user = TelegramUser.get(id=command.message.entities[1].user.id)
-			quote = command.message.text[command.message.entities[1].offset + command.message.entities[1].length + 1:]
-		
+
+		print("\n[Quote] Adding " + user.username + "'s QUOTE: '" + quote + "'.\n")
+
+		quote = command.message.text[command.message.entities[1].offset + command.message.entities[1].length + 1:]
 		added = Quote(user = user.id, content=quote, added_by=command.message.sender.id)
 
 		return f"Added \"{quote}\". {count(q for q in Quote if q.user == user.id)} quotes for {user.first_name}."
 
-		
+
 	@db_session
 	def quote(self, command: Command):
 		if len(command.message.entities) < 2:
