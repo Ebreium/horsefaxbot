@@ -30,9 +30,7 @@ class QuoteModule(BaseModule):
 		
 	@db_session
 	def add_quote(self, command: Command):
-		if len(command.args) < 2:
-			return "You must specify both a user and a quote."
-		if len(command.message.entities) < 2:
+		if len(command.args) < 2 or len(command.message.entities) < 2:
 			return "You must specify both a user and a quote."
 		
 		quote = None
@@ -98,9 +96,7 @@ class QuoteModule(BaseModule):
 		
 	@db_session
 	def list_quote(self, command: Command):
-		if len(command.args) < 2:
-			return "Syntax: `/listquote <user> <page number>`"
-		if len(command.message.entities) < 2:
+		if len(command.args) < 2 or len(command.message.entities) < 2:
 			return "Syntax: `/listquote <user> <page number>`"
 		
 		prefix = command.message.entities[1].offset + command.message.entities[1].length
