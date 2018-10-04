@@ -109,7 +109,11 @@ class QuoteModule(BaseModule):
 		else:
 			return "Use a direct mention to a user."
 
-		quotes = select(q for q in Quote if q.user == user.id).order_by(Quote.id).page(pagenum=page, pagesize=5)
+		try:
+			quotes = select(q for q in Quote if q.user == user.id).order_by(Quote.id).page(pagenum=page, pagesize=5)
+		except:
+			return "User not found. Have they spoken?"
+
 		msg = f"Quotes for {user.first_name}, page {page}\n"
 		if page == 1:
 			n = 1
